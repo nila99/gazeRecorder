@@ -2,6 +2,8 @@ console.log('Server-side code running');
 const express = require('express');
 const bodyParser = require('body-parser')
 const fs = require('fs');
+//convert json to csv
+const csvjson = require('csvjson');
 
 const app = express();
 
@@ -26,13 +28,29 @@ app.post('/clicked', (req, res) => {
   console.log('store data: ', req.body);
   let data = JSON.stringify(req.body.data, null, '\t');
 
+  const csvData = csvjson.toCSV(req.body.data, {
+    headers: 'key'
+  });
+
+  console.log("Change json data in csv: ", csvData);
+
   fs.writeFile(`results/${req.body.filename}.json`, data, error => {
-    if(error){
+    if (error) {
       console.log("An error occurred: ", error);
       res.sendStatus(500);
-    }else{
+    } else {
       console.log('Your file is made!');
-      res.sendStatus(201);
+
+      fs.writeFile(`results/${req.body.filename}.csv`, csvData, error => {
+        if (error) {
+          console.log("An error occurred: ", error);
+          res.sendStatus(500);
+        } else {
+          console.log('Your file is made!');
+          res.sendStatus(201);
+        }
+
+      })
     }
   })
 });
