@@ -5,7 +5,7 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Eleonora-2020/gazeRecorder.git"
+    "url": "https://github.com/Eleonora-2020/gazeRecorder.git"
   },
   "keywords": [
     "gazeRecorder"
